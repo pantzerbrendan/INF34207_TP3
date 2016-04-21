@@ -16,6 +16,6 @@ public:
     ~IThreadable();
 
     virtual void    *operator()(void *args) = 0;
-}
+};
 
 #endif /* !ITHREADABLE_HPP_ */

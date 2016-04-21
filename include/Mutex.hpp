@@ -23,6 +23,6 @@ public:
     int         lock();
     int         unlock();
     int         trylock();
-}
+};
 
 #endif /* !MUTEX_HPP */

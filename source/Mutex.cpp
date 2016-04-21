@@ -5,7 +5,28 @@
 #include <errno.h>
 #include "Mutex.hpp"
 
-void        m_handle_error(const std::string &function, const std::string &file, int line, int error_value);
+/*
+** Name : m_handle_error
+** Parameters : function, filename, line (these 3 params are for the error localization),
+**              error_value (return value from the function that failed).
+** Return value : none
+**
+** Description :
+** * Writes a complete error message on the error output (std::cerr).
+** * Indicates the localization of the error (function, file and line), the return value of
+** * this function. Then displays the complete error with `errno`.
+*/
+static void         m_handle_error(const std::string &function, const std::string &file, int line, int error_value)
+{
+    std::cerr << M_RED;
+    std::cerr << "An error occured at `" << function << "` ("
+        << file << ":" << line << ")\t["
+        << error_value << "]" << std::endl;
+    std::cerr << "(" << errno << ") " << strerror(errno);
+    std::cerr << M_RESET << std::endl;
+}
+
+/** ************************************************************************ **/
 
 /*
 ** Name : Mutex (constructor)
@@ -89,27 +110,4 @@ int         Mutex::trylock()
     if (ret_val) m_handle_error(__FUNCTION__, __FILE__, __LINE__, ret_val);
 
     return ret_val;
-}
-
-/** ************************************************************************ **/
-
-/*
-** Name : m_handle_error
-** Parameters : function, filename, line (these 3 params are for the error localization),
-**              error_value (return value from the function that failed).
-** Return value : none
-**
-** Description :
-** * Writes a complete error message on the error output (std::cerr).
-** * Indicates the localization of the error (function, file and line), the return value of
-** * this function. Then displays the complete error with `errno`.
-*/
-static void         t_handle_error(const std::string &function, const std::string &file, int line, int error_value)
-{
-    std::cerr << M_RED;
-    std::cerr << "An error occured at `" << function << "` ("
-        << file << ":" << line << ")\t["
-        << error_value << "]" << std::endl;
-    std::cerr << "(" << errno << ") " << strerror(errno);
-    std::cerr << M_RESET << std::endl;
 }
